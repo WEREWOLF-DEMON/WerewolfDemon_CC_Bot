@@ -6,7 +6,7 @@ import time
 import json
 import random
 import string
-from jio import check 
+from Demon import check 
 
 # Telegram bot token
 TOKEN = "7542551291:AAERpO130moNGztUh6MrXBAfs7WLHdqEfj4"
