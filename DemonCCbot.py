@@ -11,7 +11,7 @@ from Demon import check
 
 # Telegram bot token
 TOKEN = "7542551291:AAGRhdfIdjdofH7SAFZDJMHNOZ3fUdqQ75I"
-admins = [6656608288,6843778127,6304864760,6490103645]  # Admins Telegram ID
+admins = [6656608288,6843778127,6304864760,6490103645,7394590844]  # Admins Telegram ID
 
 # Initialize the bot
 bot = telebot.TeleBot(TOKEN)
