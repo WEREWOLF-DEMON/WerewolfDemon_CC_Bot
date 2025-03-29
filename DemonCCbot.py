@@ -10,8 +10,8 @@ import string
 from Demon import check 
 
 # Telegram bot token
-TOKEN = "7542551291:AAHcEz5zqGQDMsEm8yh40A0JH-Oy1k-h3oI"
-admins = [6656608288]  # Admins Telegram ID
+TOKEN = "7068446131:AAEoM_TArYP2Em1cMI_Gdl-g4KVHkJVpAq8"
+admins = [6656608288,5938685661]  # Admins Telegram ID
 
 # Initialize the bot
 bot = telebot.TeleBot(TOKEN)
